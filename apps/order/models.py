@@ -10,7 +10,6 @@ class Order(models.Model):
     vendor = models.ForeignKey("vendor.Vendor", on_delete=models.SET_NULL, null=True, related_name="orders")
     delivery_time = models.PositiveBigIntegerField(help_text="Preparation and shipping time")
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-    trip = models.ForeignKey("trip.Trip", on_delete=models.CASCADE, related_name="order")
     updated_at = models.DateTimeField(auto_now=True)
 
 
