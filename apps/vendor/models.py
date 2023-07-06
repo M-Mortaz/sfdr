@@ -1,3 +1,8 @@
 from django.db import models
+from faker import Faker
 
-# Create your models here.
+fake = Faker()
+
+
+class Vendor(models.Model):
+    name = models.CharField(max_length=100, default=fake.name)

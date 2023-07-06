@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
 
-# Build paths inside the project like this: BASE_DIR / "subdir".
+from decouple import Config, RepositoryEnv
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+DOTENV_FILE = BASE_DIR / "environments/development.env"
+config = Config(RepositoryEnv(DOTENV_FILE))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -24,24 +25,30 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("SECRET_KEY", cast=str, default="changeme_asdkjfghjkasf54q543r6dfas*%sk")
 
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = config("DEBUG", cast=bool,  default=True)
+DEBUG = config("DEBUG", cast=bool, default=True)
 
 ALLOWED_HOSTS = ["*"]
 
-
-# Application definition
-
 INSTALLED_APPS = [
+    # Built-In apps
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # Internal apps
     "apps.vendor",
-    "apps.user",
     "apps.agent",
-    "apps.order"
+    "apps.order",
+    "apps.trip",
+
+    # Third party Apps
+    'rest_framework',
+    'corsheaders',
+    'django_celery_beat',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -58,14 +65,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "SFDR.urls"
 
-
 WSGI_APPLICATION = "SFDR.wsgi.application"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 WHITENOISE_MANIFEST_STRICT = False
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
     "default": {
@@ -98,9 +102,6 @@ TEMPLATES = [
     },
 ]
 
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
@@ -109,15 +110,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / STATIC_URL
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
