@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "Snapp food delay report system"
+version = "0.1.0"
+description = ""
+license = "MIT"
+authors = ["Mehdi.M <mehdi@Mehdis-MacBook-Pro.local>"]
+readme = "README.md"
+packages = [{ include = "SFDR" }]
+
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^4.2.3"
+djangorestframework = "^3.14.0"
+gunicorn = "^20.1.0"
+redis = "^4.6.0"
+celery = "^5.3.1"
+django-cors-headers = "^4.1.0"
+django-filter = "^23.2"
+psycopg = {extras = ["binary"], version = "^3.1.9"}
+whitenoise = "^6.5.0"
+python-decouple = "^3.8"
+uwsgi = "^2.0.21"
+django-celery-beat = "^2.5.0"
+drf-yasg = "^1.21.6"
+python-logstash = "^0.4.8"
+pre-commit = "^3.3.3"

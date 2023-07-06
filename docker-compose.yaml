@@ -1,0 +1,77 @@
+version: "3"
+services:
+  test:
+    build: .
+    command: python manage.py test
+    env_file: environments/production.env
+    depends_on:
+      - db
+    restart: no
+
+  web:
+    build: .
+    restart: always
+    command: /bin/bash -c "/entry_point.sh"
+    env_file: environments/production.env
+    volumes:
+      - static:/static
+      - socket:/socket
+    depends_on:
+      - db
+      - redis
+    links:
+      - db
+      - redis
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    environment:
+      - RABBITMQ_DEFAULT_USER=rabbit_username
+      - RABBITMQ_DEFAULT_PASS=rabbit_password
+      - RABBITMQ_DEFAULT_VHOST=dear_vhost
+    ports:
+      - "5672:5672"
+      - "15450:15672"
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_DB=sfdr
+      - POSTGRES_USER=sfdr
+      - POSTGRES_PASSWORD=sfdr
+    ports:
+      - "6000:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6200:6379"
+
+  celery:
+    build: .
+    command: celery -A SFDR worker --beat --scheduler django --loglevel=info --logfile=celery.log
+    env_file: environments/production.env
+    restart: always
+    links:
+      - redis
+      - db
+
+  nginx:
+    build: ./nginx
+    restart: always
+    ports:
+      - "80:8080"
+    volumes:
+      - socket:/socket
+      - static:/static
+
+volumes:
+  db_data:
+  redis_data:
+  socket:
+  static:
