@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "apps.agent",
     "apps.order",
     "apps.trip",
+    "apps.user",
 
     # Third party Apps
     'rest_framework',
@@ -70,7 +71,6 @@ WSGI_APPLICATION = "SFDR.wsgi.application"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 WHITENOISE_MANIFEST_STRICT = False
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -86,6 +86,7 @@ DATABASES = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = []
+AUTH_USER_MODEL = "user.User"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
