@@ -1,6 +1,6 @@
 from rest_framework import routers
 
-# from manage.views import SMSNotificationViewSet
+from apps.vendor.views import VendorViewSet
 
 router_v1 = routers.DefaultRouter()
-# router_v1.register(r'sms', SMSNotificationViewSet, basename='sms')
+router_v1.register(r'vendors', VendorViewSet, basename='vendor')
