@@ -1,13 +1,26 @@
 import logging
+from datetime import datetime, timedelta, timezone
 
 import requests
 from django.conf import settings
+from khayyam import JalaliDatetime
+
+from apps.order.exc import FailedToGetNewShipmentError
+from apps.order.timezone_local import TEHRAN_OFFSET, Timezone
 
 logger = logging.getLogger(__name__)
 
 
-class FailedToGetNewShipmentError(Exception):
-    pass
+class TehranTimezone(Timezone):
+    """
+    Tehran timezone with a fixed +3:30 GMT offset.
+    """
+
+    def __init__(self):
+        super(TehranTimezone, self).__init__(
+            TEHRAN_OFFSET,
+            "Asia/Tehran"
+        )
 
 
 def renew_shipment_time(order_id: int) -> int:
@@ -41,3 +54,19 @@ def renew_shipment_time(order_id: int) -> int:
     if last_error:
         raise last_error from None
     raise FailedToGetNewShipmentError
+
+
+def first_day_of_current_week_jalali() -> datetime:
+    now_jalali = JalaliDatetime.now()
+    year, week, day = now_jalali.isocalendar()
+    first_day_of_week_jalali_datetime = now_jalali - timedelta(days=day - 1)
+    first_day_of_week_jalali_datetime_midnight = first_day_of_week_jalali_datetime.replace(
+        hour=0,
+        minute=0,
+        second=0,
+        microsecond=0,
+    )
+    first_day_of_week_gregorian: datetime = first_day_of_week_jalali_datetime_midnight.todatetime()
+    first_day_of_week_gregorian_tehran_tz = first_day_of_week_gregorian.replace(tzinfo=TehranTimezone())
+    first_day_of_week_gregorian_utc_tz = first_day_of_week_gregorian_tehran_tz.astimezone(tz=timezone.utc)
+    return first_day_of_week_gregorian_utc_tz
