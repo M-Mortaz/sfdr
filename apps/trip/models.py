@@ -9,5 +9,5 @@ class TripState(models.IntegerChoices):
 
 
 class Trip(models.Model):
-    status = models.SmallIntegerField(choices=TripState.choices, db_index=True)
-    order = models.ForeignKey("order.Order", on_delete=models.CASCADE)
+    status = models.PositiveSmallIntegerField(choices=TripState.choices, db_index=True)
+    order = models.OneToOneField("order.Order", on_delete=models.CASCADE, related_name="trip")

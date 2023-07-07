@@ -1,6 +1,6 @@
 from rest_framework import routers
 
-# from manage.views import SMSNotificationViewSet
+from apps.trip.views import TripViewSet
 
 router_v1 = routers.DefaultRouter()
-# router_v1.register(r'sms', SMSNotificationViewSet, basename='sms')
+router_v1.register(r'trips', TripViewSet, basename='trip')
