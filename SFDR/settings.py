@@ -116,6 +116,10 @@ STATIC_ROOT = BASE_DIR / STATIC_URL
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+RENEW_SHIPMENT_TIME_URI = "http://run.mocky.io/v3/122c2796-5df4-461c-ab75-87c1192b17f7"
+RETRY_RENEW_SHIPMENT_TIME = 3
+TIMEOUT_RENEW_SHIPMENT_TIME = 10  # in sec
+
 LOGGING = {
     "disable_existing_loggers": False,
     "version": 1,
