@@ -17,7 +17,18 @@ A web base service that handle delay report request at SnappFood company!
 - gitlab CICD
 
 ## Run via docker
-
+Versions:
+```shell
+docker --version
+# Docker version 20.10.21, build baeda1f
+docker-compose --version
+# Docker Compose version v2.13.0
+```
+### Docker network
+First create a global network for docker project
+```shell
+docker network create sfdr_global || true
+```
 ### SFDR Web App
 To run service itself, execute the following command at teh root of the project (be sure u have installed both docker and `docker compose`):
 ```shell
@@ -27,7 +38,7 @@ Open [http://localhost/admin/](http://localhost/admin/) to access the admin pane
 <br>
 To access the custom API documentation browse [](http://localhost/api/v1/) address.
 <br>
-To access the swagger browse [http://locahost/swagger/](http://locahost/swagger/)
+To access the swagger browse [http://localhost/swagger/](http://localhost/swagger/)
 <br>
 To access the landing page browse [http://localhost/](http://localhost/)
 

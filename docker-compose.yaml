@@ -1,13 +1,21 @@
-version: "3"
+version: "3.7"
 services:
   test:
     build: .
-    command: python manage.py test
+    command:
+      - /bin/sh
+      - -c
+      - |
+        echo "Sleeping till db ready to accept connection!"
+        sleep 3
+        echo "Running test ..."
+        python manage.py test --noinput
     env_file: environments/production.env
     depends_on:
       - db
     restart: 'no'
-
+    networks:
+      - sfdr_global
   web:
     build: .
     restart: always
@@ -19,10 +27,15 @@ services:
     depends_on:
       - db
       - redis
+      - test
+      - nginx
+      - rabbitmq
+
     links:
       - db
       - redis
-
+    networks:
+      - sfdr_global
   rabbitmq:
     image: rabbitmq:3-management
     environment:
@@ -32,7 +45,8 @@ services:
     ports:
       - "5672:5672"
       - "15450:15672"
-
+    networks:
+      - sfdr_global
   db:
     image: postgres:latest
     restart: always
@@ -44,14 +58,16 @@ services:
       - "6000:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-
+    networks:
+      - sfdr_global
   redis:
     image: redis:latest
     volumes:
       - redis_data:/data
     ports:
       - "6200:6379"
-
+    networks:
+      - sfdr_global
   celery:
     build: .
     command: celery -A SFDR worker --beat --scheduler django --loglevel=info --logfile=celery.log
@@ -60,6 +76,8 @@ services:
     links:
       - redis
       - db
+    networks:
+      - sfdr_global
 
   nginx:
     build: ./nginx
@@ -69,9 +87,15 @@ services:
     volumes:
       - socket:/socket
       - static:/static
+    networks:
+      - sfdr_global
 
 volumes:
   db_data:
   redis_data:
   socket:
   static:
+
+networks:
+  sfdr_global:
+    external: true

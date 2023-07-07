@@ -57,7 +57,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -70,8 +69,6 @@ ROOT_URLCONF = "SFDR.urls"
 
 WSGI_APPLICATION = "SFDR.wsgi.application"
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-WHITENOISE_MANIFEST_STRICT = False
 
 DATABASES = {
     "default": {
@@ -81,6 +78,9 @@ DATABASES = {
         "PASSWORD": config("DB_PASSWORD", cast=str, default="sfdr"),
         "HOST": config("DB_HOST", cast=str, default="localhost"),
         "PORT": config("DB_PORT", cast=int, default="5432"),
+        "TEST": {
+            "NAME": "testdb",
+        },
     }
 }
 
