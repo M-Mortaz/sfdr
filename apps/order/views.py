@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta
 
-from django.db import transaction, IntegrityError
+from django.db import transaction, IntegrityError, models
 from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
@@ -13,7 +13,7 @@ from apps.agent.models import Agent
 from apps.order.enums import DelayResponseCodeEnum
 from apps.order.models import Order, OrderDelayReport, DelayReportAction, DelayReportState
 from apps.order.serializers import OrderSerializer, ReportOrderResponseSerializer, OrderDelayReportSerializer
-from apps.order.utils import renew_shipment_time
+from apps.order.utils import renew_shipment_time, first_day_of_current_week_jalali
 from apps.trip.models import TripState
 
 logger = logging.getLogger(__name__)
@@ -33,7 +33,15 @@ class OrderViewSet(viewsets.ModelViewSet):
     def delay(self, request, **kwargs):
         order: Order = self.get_object()
         if order.deliver_at > timezone.now():
-            return Response(data={"message": "You cannot report a delay before the delivery time."})
+            return Response(
+                data={
+                    "message": "You cannot report a delay before the delivery time.",
+                    "code": 0,
+                    "order": None,
+                    "report": None,
+                },
+                status=HTTP_400_BAD_REQUEST
+            )
 
         trip = hasattr(order, "trip") and order.trip
         if trip and trip.status in [TripState.ASSIGNED, TripState.AT_VENDOR, TripState.PICKED]:
@@ -81,7 +89,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=False,
-        methods=['GET'],
+        methods=['POST'],
         url_path='delay-assign/(?P<agent_id>[^/.]+)',
         url_name="Assign FIFO delay to agent"
     )
@@ -137,9 +145,9 @@ class OrderViewSet(viewsets.ModelViewSet):
             except IntegrityError as e:
                 if "unique_assigned_delay_report_to_one_agent" in str(e):
                     order_report = OrderDelayReport.objects.filter(
-                                agent_id=agent_id,
-                                state=DelayReportState.ASSIGNED_TO_VENDOR
-                        ).first()
+                        agent_id=agent_id,
+                        state=DelayReportState.ASSIGNED_TO_VENDOR
+                    ).first()
                     message = "Agent already has an assigned delay report!"
                     code = 2
                     order_report = OrderDelayReportSerializer(order_report).data
@@ -155,3 +163,18 @@ class OrderViewSet(viewsets.ModelViewSet):
             },
             status=status
         )
+
+    @action(
+        detail=False,
+        methods=['GET'],
+        url_path='vendor-delay',
+        url_name="Sorted vendors delay for last currently week"
+    )
+    def vendor_delays(self, request):
+        first_datetime_of_current_week = first_day_of_current_week_jalali()
+        vendors_delay = OrderDelayReport.objects.filter(created_at__gte=first_datetime_of_current_week) \
+            .values("vendor") \
+            .annotate(
+            total_delay=models.Sum("delay"),
+        )
+        return Response(data=vendors_delay, status=HTTP_200_OK)
