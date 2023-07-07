@@ -15,6 +15,7 @@ A web base service that handle delay report request at SnappFood company!
 - Poetry (dependency management)
 - Pre commit
 - gitlab CICD
+- Swagger
 
 ## Run via docker
 Versions:
