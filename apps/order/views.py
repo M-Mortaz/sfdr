@@ -26,7 +26,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=True,
-        methods=['GET'],
+        methods=['POST'],
         url_path='report-delay',
         url_name="Report a delay for an order."
     )

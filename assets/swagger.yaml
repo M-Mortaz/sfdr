@@ -1,0 +1,615 @@
+swagger: '2.0'
+info:
+  title: Notifier API
+  version: v1
+host: localhost:8000
+schemes:
+- http
+basePath: /api/v1
+consumes:
+- application/json
+produces:
+- application/json
+securityDefinitions:
+  Basic:
+    type: basic
+security:
+- Basic: []
+paths:
+  /agents/:
+    get:
+      operationId: agents_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Agent'
+      tags:
+      - agents
+    post:
+      operationId: agents_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Agent'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Agent'
+      tags:
+      - agents
+    parameters: []
+  /agents/{id}/:
+    get:
+      operationId: agents_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Agent'
+      tags:
+      - agents
+    put:
+      operationId: agents_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Agent'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Agent'
+      tags:
+      - agents
+    patch:
+      operationId: agents_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Agent'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Agent'
+      tags:
+      - agents
+    delete:
+      operationId: agents_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - agents
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this agent.
+      required: true
+      type: integer
+  /orders/:
+    get:
+      operationId: orders_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Order'
+      tags:
+      - orders
+    post:
+      operationId: orders_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Order'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Order'
+      tags:
+      - orders
+    parameters: []
+  /orders/delay-assign/{agent_id}/:
+    post:
+      operationId: orders_assign
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Order'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Order'
+      tags:
+      - orders
+    parameters:
+    - name: agent_id
+      in: path
+      required: true
+      type: string
+  /orders/vendor-delay/:
+    get:
+      operationId: orders_vendor_delays
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Order'
+      tags:
+      - orders
+    parameters: []
+  /orders/{id}/:
+    get:
+      operationId: orders_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Order'
+      tags:
+      - orders
+    put:
+      operationId: orders_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Order'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Order'
+      tags:
+      - orders
+    patch:
+      operationId: orders_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Order'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Order'
+      tags:
+      - orders
+    delete:
+      operationId: orders_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - orders
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this order.
+      required: true
+      type: integer
+  /orders/{id}/report-delay/:
+    get:
+      operationId: orders_delay
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Order'
+      tags:
+      - orders
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this order.
+      required: true
+      type: integer
+  /trips/:
+    get:
+      operationId: trips_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Trip'
+      tags:
+      - trips
+    post:
+      operationId: trips_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Trip'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Trip'
+      tags:
+      - trips
+    parameters: []
+  /trips/{id}/:
+    get:
+      operationId: trips_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Trip'
+      tags:
+      - trips
+    put:
+      operationId: trips_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Trip'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Trip'
+      tags:
+      - trips
+    patch:
+      operationId: trips_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Trip'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Trip'
+      tags:
+      - trips
+    delete:
+      operationId: trips_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - trips
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this trip.
+      required: true
+      type: integer
+  /users/:
+    get:
+      operationId: users_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+      tags:
+      - users
+    post:
+      operationId: users_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - users
+    parameters: []
+  /users/{id}/:
+    get:
+      operationId: users_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - users
+    put:
+      operationId: users_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - users
+    patch:
+      operationId: users_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/User'
+      tags:
+      - users
+    delete:
+      operationId: users_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - users
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this user.
+      required: true
+      type: integer
+  /vendors/:
+    get:
+      operationId: vendors_list
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Vendor'
+      tags:
+      - vendors
+    post:
+      operationId: vendors_create
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Vendor'
+      responses:
+        '201':
+          description: ''
+          schema:
+            $ref: '#/definitions/Vendor'
+      tags:
+      - vendors
+    parameters: []
+  /vendors/{id}/:
+    get:
+      operationId: vendors_read
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Vendor'
+      tags:
+      - vendors
+    put:
+      operationId: vendors_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Vendor'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Vendor'
+      tags:
+      - vendors
+    patch:
+      operationId: vendors_partial_update
+      description: ''
+      parameters:
+      - name: data
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Vendor'
+      responses:
+        '200':
+          description: ''
+          schema:
+            $ref: '#/definitions/Vendor'
+      tags:
+      - vendors
+    delete:
+      operationId: vendors_delete
+      description: ''
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - vendors
+    parameters:
+    - name: id
+      in: path
+      description: A unique integer value identifying this vendor.
+      required: true
+      type: integer
+definitions:
+  Agent:
+    type: object
+    properties:
+      name:
+        title: Name
+        type: string
+        maxLength: 100
+        minLength: 1
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+  Order:
+    type: object
+    properties:
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+      name:
+        title: Name
+        type: string
+        maxLength: 100
+        minLength: 1
+      vendor:
+        title: Vendor
+        type: integer
+        x-nullable: true
+      deliver_at:
+        title: Deliver at
+        type: string
+        format: date-time
+      created_at:
+        title: Created at
+        type: string
+        format: date-time
+        readOnly: true
+  Trip:
+    required:
+    - status
+    - order
+    type: object
+    properties:
+      status:
+        title: Status
+        type: integer
+        enum:
+        - 1
+        - 2
+        - 3
+        - 4
+      order:
+        title: Order
+        type: integer
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+  User:
+    required:
+    - username
+    - password
+    type: object
+    properties:
+      username:
+        title: Username
+        type: string
+        pattern: ^[\w.@+-]+$
+        maxLength: 150
+        minLength: 1
+      password:
+        title: Password
+        type: string
+        maxLength: 128
+        minLength: 1
+      id:
+        title: ID
+        type: integer
+        readOnly: true
+  Vendor:
+    type: object
+    properties:
+      name:
+        title: Name
+        type: string
+        maxLength: 100
+        minLength: 1
+      id:
+        title: ID
+        type: integer
+        readOnly: true

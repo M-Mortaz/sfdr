@@ -12,10 +12,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-from decouple import Config, RepositoryEnv
+from decouple import Config, RepositoryEnv, config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DOTENV_FILE = BASE_DIR / "environments/development.env"
+env_file = config("PHASE", default="development")
+
+DOTENV_FILE = BASE_DIR / f"environments/{env_file}.env"
 config = Config(RepositoryEnv(DOTENV_FILE))
 
 # Quick-start development settings - unsuitable for production
