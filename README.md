@@ -49,7 +49,10 @@ cd ELK  # enter ELK directory!
 docker compose up setup  # Just once to setup pre-hooks, for the next time you can ignore this part.
 docker compose up
 ```
-After that you can access the kibana panel at [http://localhost:5601/app/management](http://localhost:5601/app/management) then you need loging using username=`elastic` and password=`changeme` credential. To add the log data view
+After that you can access the kibana panel at [http://localhost:5601/app/management](http://localhost:5601/app/management)
+then you need loging using username=`elastic` and password=`changeme` credential. To add the log data view (be sure you have at least one log, for example force app to raise 404 error by browse random api path):
+![kibana_add_snappfood_data_view](./assets/kibana_add_snappfood_data_view.png)
+
 ## Run in development
 First clone project and install dependencies:
 ```shell
