@@ -1,6 +1,6 @@
 from rest_framework import routers
 
-# from manage.views import SMSNotificationViewSet
+from apps.agent.views import AgentViewSet
 
-router_v1 = routers.DefaultRouter()
-# router_v1.register(r'sms', SMSNotificationViewSet, basename='sms')
+router_v1 = routers.DefaultRouter()  # NoQA
+router_v1.register(r'agents', AgentViewSet, basename='agent')
